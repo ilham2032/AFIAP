@@ -1,0 +1,24 @@
+import { Navigate, useLocation } from 'react-router'
+import type { ReactNode } from 'react'
+import { useAuth } from '../context/AuthContext'
+
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const { user, isLoading } = useAuth()
+  const location = useLocation()
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center bg-white">
+        <p className="text-sm font-semibold text-slate-600">Loading account...</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />
+  }
+
+  return children
+}
+
+export default ProtectedRoute

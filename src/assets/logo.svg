@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" fill="none" role="img" aria-label="AFIAP">
+  <rect width="48" height="48" rx="12" fill="#1e40af"/>
+  <path d="M14 32V16h6.5c4.2 0 6.8 2.2 6.8 5.6 0 2.4-1.2 4.2-3.2 5l4.2 5.4h-4.8l-3.6-4.8H18v4.8H14zm4-8.4h2.4c1.8 0 2.8-.8 2.8-2.2s-1-2.2-2.8-2.2H18v4.4z" fill="#fff"/>
+  <text x="58" y="32" fill="#172554" font-family="Doppio One, system-ui, sans-serif" font-size="22" letter-spacing="-0.02em">AFIAP</text>
+</svg>
