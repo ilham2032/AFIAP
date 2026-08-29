@@ -78,6 +78,27 @@ export const learnBenefits = [
   },
 ] as const
 
+export const learnStats = [
+  { value: '4+', label: 'Active courses' },
+  { value: '500+', label: 'Students enrolled' },
+  { value: '100%', label: 'Practical focus' },
+] as const
+
+export const learnSteps = [
+  {
+    title: 'Create account',
+    description: 'Sign up for free and access your personal AFIAP Learn dashboard.',
+  },
+  {
+    title: 'Choose a course',
+    description: 'Pick from web development, robotics, AI, or programming tracks.',
+  },
+  {
+    title: 'Learn & grow',
+    description: 'Complete modules, practice projects, and build real-world skills.',
+  },
+] as const
+
 export const homeStats = [
   { value: '25+', label: 'Team Members' },
   { value: '12+', label: 'Awards Won' },

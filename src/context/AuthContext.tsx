@@ -1,38 +1,41 @@
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from 'react'
-import { fetchCurrentUser, login as loginRequest, signup as signupRequest, updateProfile as updateProfileRequest, type LoginPayload, type SignupPayload, type UpdateProfilePayload, type User } from '../lib/auth'
+import {
+  fetchCurrentUser,
+  login as loginRequest,
+  signup as signupRequest,
+  updateProfile as updateProfileRequest,
+  type LoginPayload,
+  type SignupPayload,
+  type UpdateProfilePayload,
+  type User,
+} from '../lib/auth'
+import { AuthContext } from './auth-context'
 
-type AuthContextValue = {
-  user: User | null
-  isLoading: boolean
-  login: (payload: LoginPayload) => Promise<void>
-  signup: (payload: SignupPayload) => Promise<void>
-  updateProfile: (payload: UpdateProfilePayload) => Promise<void>
-  logout: () => void
-}
-
-const AuthContext = createContext<AuthContextValue | null>(null)
 const TOKEN_KEY = 'afiap_auth_token'
+
+const hasStoredToken = () =>
+  typeof window !== 'undefined' && !!localStorage.getItem(TOKEN_KEY)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(hasStoredToken)
 
   const persistSession = useCallback((token: string, nextUser: User) => {
     localStorage.setItem(TOKEN_KEY, token)
     setUser(nextUser)
+    setIsLoading(false)
   }, [])
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY)
     setUser(null)
+    setIsLoading(false)
   }, [])
 
   const login = useCallback(async (payload: LoginPayload) => {
@@ -52,16 +55,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem(TOKEN_KEY)
+    if (!token) return
 
-    if (!token) {
-      setIsLoading(false)
-      return
-    }
+    let cancelled = false
 
     fetchCurrentUser(token)
-      .then(setUser)
-      .catch(() => localStorage.removeItem(TOKEN_KEY))
-      .finally(() => setIsLoading(false))
+      .then((currentUser) => {
+        if (!cancelled) setUser(currentUser)
+      })
+      .catch(() => {
+        localStorage.removeItem(TOKEN_KEY)
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const value = useMemo(
@@ -70,14 +81,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
-
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
-  }
-
-  return context
 }

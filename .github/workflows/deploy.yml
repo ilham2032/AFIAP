@@ -29,6 +29,7 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: true
+          VITE_WEB3FORMS_ACCESS_KEY: ${{ secrets.WEB3FORMS_ACCESS_KEY }}
 
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html

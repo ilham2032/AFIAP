@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router'
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../../hooks/useAuth'
 
 const sidebarLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block rounded-xl px-4 py-3 text-sm font-semibold transition ${

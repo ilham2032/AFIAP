@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { partnerLogos } from '../data/site'
 
 const PartnersSection = () => {
@@ -24,6 +25,14 @@ const PartnersSection = () => {
               />
             </div>
           ))}
+        </div>
+        <div className="mt-12 text-center">
+          <Link to="/become-a-partner" className="btn-primary">
+            Become a Partner
+          </Link>
+          <p className="mx-auto mt-4 max-w-md text-sm text-slate-600">
+            Register your organization and join our growing partner network.
+          </p>
         </div>
       </div>
     </section>
